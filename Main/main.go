@@ -2,58 +2,25 @@ package main
 
 import (
 	"fmt"
-	"math/rand"
-	"time"
+	da "go-data-algorithms"
 )
 
 func main() {
+	expectedOutcomeArray := []int{1, 2, 3, 4, 5, 6}
+	actualInputArray := []int{6, 5, 4, 3, 2, 1}
 
-	slice := generateSlice(50)
-	fmt.Println("\n --- unsorted --- \n\n", slice)
-	fmt.Println("\n--- sorted ---\n\n", MergeSort(slice), "\n")
-}
-
-// Generates a slice of size, size filled with random numbers
-func generateSlice(size int) []int {
-
-	slice := make([]int, size, size)
-	rand.Seed(time.Now().UnixNano())
-	for i := 0; i < size; i++ {
-		slice[i] = rand.Intn(99999) - rand.Intn(99999)
+	outcomeArray, err := da.InsertionSort(actualInputArray)
+	if err != nil {
+		fmt.Println(err.Error())
 	}
-	return slice
-}
 
-// Runs MergeSort algorithm on a slice single
-func MergeSort(slice []int) []int {
+	fmt.Println(outcomeArray)
+	fmt.Println(expectedOutcomeArray)
 
-	if len(slice) < 2 {
-		return slice
+	outcome2, err := da.QuickSort(actualInputArray)
+	if err != nil {
+		fmt.Println(err.Error())
 	}
-	mid := (len(slice)) / 2
-	return Merge(MergeSort(slice[:mid]), MergeSort(slice[mid:]))
-}
 
-// Merges left and right slice into newly created slice
-func Merge(left, right []int) []int {
-
-	size, i, j := len(left)+len(right), 0, 0
-	slice := make([]int, size, size)
-
-	for k := 0; k < size; k++ {
-		if i > len(left)-1 && j <= len(right)-1 {
-			slice[k] = right[j]
-			j++
-		} else if j > len(right)-1 && i <= len(left)-1 {
-			slice[k] = left[i]
-			i++
-		} else if left[i] < right[j] {
-			slice[k] = left[i]
-			i++
-		} else {
-			slice[k] = right[j]
-			j++
-		}
-	}
-	return slice
+	fmt.Println(outcome2)
 }
